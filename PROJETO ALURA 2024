@@ -1,0 +1,52 @@
+import sys
+
+tasks = []
+
+def add_task(task):
+    tasks.append({"task": task, "completed": False})
+    print(f"Tarefa '{task}' adicionada.")
+
+def list_tasks():
+    if not tasks:
+        print("Nenhuma tarefa encontrada.")
+        return
+    for idx, task in enumerate(tasks):
+        status = "Concluída" if task["completed"] else "Pendente"
+        print(f"{idx + 1}. {task['task']} [{status}]")
+
+def mark_task_completed(index):
+    if 0 <= index < len(tasks):
+        tasks[index]["completed"] = True
+        print(f"Tarefa '{tasks[index]['task']}' marcada como concluída.")
+    else:
+        print("Índice de tarefa inválido.")
+
+def main():
+    if len(sys.argv) < 2:
+        print("Uso: python main.py [comando] [argumento]")
+        print("Comandos: add [tarefa], list, complete [índice]")
+        return
+
+    command = sys.argv[1]
+
+    if command == "add":
+        if len(sys.argv) < 3:
+            print("Uso: python main.py add [tarefa]")
+            return
+        add_task(" ".join(sys.argv[2:]))
+    elif command == "list":
+        list_tasks()
+    elif command == "complete":
+        if len(sys.argv) < 3:
+            print("Uso: python main.py complete [índice]")
+            return
+        try:
+            index = int(sys.argv[2]) - 1
+            mark_task_completed(index)
+        except ValueError:
+            print("Índice inválido.")
+    else:
+        print("Comando desconhecido.")
+
+if __name__ == "__main__":
+    main()
